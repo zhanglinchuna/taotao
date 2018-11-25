@@ -3,7 +3,10 @@ package com.taotao.pojo;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
+
+@Table(name = "tb_item_cat")
 public class ItemCat extends BasePojo {
 
     @Id
