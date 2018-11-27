@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 @Controller
+@RequestMapping("item/cat")
 public class ItemCatController {
 
     @Autowired
@@ -23,7 +24,9 @@ public class ItemCatController {
             @RequestParam(value = "id",defaultValue = "0")Long parentId){
 
         try {
-            List<ItemCat> itemCats = this.itemCatService.queryItemCat(parentId);
+            ItemCat record = new ItemCat();
+            record.setParentId(parentId);
+            List<ItemCat> itemCats = this.itemCatService.queryListByWhere(record);
             if (itemCats == null || itemCats.isEmpty()){
                 // 404
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);

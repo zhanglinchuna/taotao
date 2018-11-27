@@ -1,1 +1,4 @@
-com\taotao\pojo\App.class
+com\taotao\pojo\Item.class
+com\taotao\pojo\ItemDesc.class
+com\taotao\pojo\BasePojo.class
+com\taotao\pojo\ItemCat.class
