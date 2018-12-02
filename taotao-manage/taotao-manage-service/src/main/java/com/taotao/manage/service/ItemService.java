@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.taotao.manage.mapper.ItemMapper;
 import com.taotao.pojo.Item;
 import com.taotao.pojo.ItemDesc;
+import com.taotao.pojo.ItemParamItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +21,11 @@ public class ItemService extends BaseService<Item> {
     @Autowired
     private ItemMapper itemMapper;
 
+    @Autowired
+    private ItemParamItemService itemParamItemService;
+
     // 同一个方法中存在两个事务，根据事务的传播特性，如果当前的事务存在，则另一个事务嵌套当前事务执行
-    public void saveItem(Item item,String desc){
+    public void saveItem(Item item,String desc,String itemParams){
         // 设置初始数据
         item.setStatus(1);
         // 强制设置id为null，数据库主键自动增长
@@ -35,6 +39,12 @@ public class ItemService extends BaseService<Item> {
         itemDesc.setItemDesc(desc);
         // 保存描述数据
         this.itemDescService.save(itemDesc);
+
+        // 保存商品规格
+        ItemParamItem itemParamItem = new ItemParamItem();
+        itemParamItem.setItemId(item.getId());
+        itemParamItem.setParamData(itemParams);
+        this.itemParamItemService.save(itemParamItem);
     }
 
     public PageInfo<Item> queryPageList(Integer page,Integer rows){
@@ -49,7 +59,7 @@ public class ItemService extends BaseService<Item> {
         return new PageInfo<>(list);
     }
 
-    public  void updateItem(Item item, String desc){
+    public  void updateItem(Item item, String desc,String itemParams){
         // 强制设置不能修改的字段为null
         item.setStatus(null);
         item.setCreated(null);
@@ -60,5 +70,8 @@ public class ItemService extends BaseService<Item> {
         itemDesc.setItemId(item.getId());
         itemDesc.setItemDesc(desc);
         this.itemDescService.updateSelective(itemDesc);
+
+        // 修改商品规格参数数据(根据传入的商品id进行选择性更新)
+        this.itemParamItemService.updateItemParamItem(item.getId(),itemParams);
     }
 }

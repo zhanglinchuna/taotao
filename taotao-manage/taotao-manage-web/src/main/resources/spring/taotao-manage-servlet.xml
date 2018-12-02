@@ -13,7 +13,18 @@
     <!-- 定义注解驱动
     自动注册RequestMappingHandlerMapping与RequestMappingHandlerAdapter两个Bean
     -->
-    <mvc:annotation-driven/>
+    <mvc:annotation-driven>
+        <mvc:message-converters register-defaults="true">
+            <!--
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <constructor-arg index="0" value="UTF-8"/>
+            </bean>
+            -->
+            <bean class="com.taotao.common.spring.exetend.converter.json.CallbackMappingJackson2HttpMessageConverter">
+                <property name="callbackName" value="callback"/>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
     <!-- 定义Controller的扫描包 -->
     <context:component-scan base-package="com.taotao.manage.controller"/>
 
