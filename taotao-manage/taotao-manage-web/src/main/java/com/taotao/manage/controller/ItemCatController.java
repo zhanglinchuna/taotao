@@ -19,6 +19,11 @@ public class ItemCatController {
     @Autowired
     private ItemCatService itemCatService;
 
+    /**
+     * 根据父节点id查询类目列表
+     * @param parentId
+     * @return
+     */
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<ItemCat>> queryItemCat(
             @RequestParam(value = "id",defaultValue = "0")Long parentId){
@@ -39,4 +44,5 @@ public class ItemCatController {
         // 500
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
     }
+
 }

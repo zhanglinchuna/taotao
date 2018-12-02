@@ -1,9 +1,11 @@
 package com.taotao.manage.controller;
 
-import com.taotao.manage.service.ItemDescService;
+import com.github.pagehelper.PageInfo;
+import com.taotao.common.bean.EasyUIResult;
 import com.taotao.manage.service.ItemService;
 import com.taotao.pojo.Item;
-import com.taotao.pojo.ItemDesc;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,44 +15,93 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+
 @RequestMapping("item")
 @Controller
 public class ItemController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ItemController.class);
     @Autowired
     private ItemService itemService;
 
-    @Autowired
-    private ItemDescService itemDescService;
-
-    @RequestMapping(method = RequestMethod.DELETE.POST)
+    /**
+     * 新增商品
+     * @param item
+     * @param desc
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Void> saveItem(Item item, @RequestParam("desc")String desc){
+        // desc是前台新增商品模块中的 商品描述 内容
         try {
+            if(LOGGER.isInfoEnabled()){
+                LOGGER.info("新增商品，item = {}, desc = {}",item,desc);
+            }
             if (StringUtils.isEmpty(item.getTitle())) {
                 // 响应400
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
             }
-
-            // 设置初始数据
-            item.setStatus(1);
-
-            item.setId(null);// 强制设置id为null
-
             //保存商品的基本数据
-            this.itemService.save(item);
-
-            ItemDesc itemDesc = new ItemDesc();
-            itemDesc.setItemId(item.getId());
-            itemDesc.setItemDesc(desc);
-            //保存描述数据
-            this.itemDescService.save(itemDesc);
-
+            this.itemService.saveItem(item,desc);
+            if(LOGGER.isInfoEnabled()){
+                LOGGER.info("新增商品成功，itemId = {}",item.getId());
+            }
             // 成功 201
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("新增商品失败！ title = "+item.getTitle()+",cid = "+item.getCid(),e);
         }
         // 出错 500
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+
+    /**
+     * 查询商品列表
+     * @param page
+     * @param rows
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<EasyUIResult> queryItemList(
+            @RequestParam(value = "page",defaultValue = "1")Integer page,
+            @RequestParam(value = "rows",defaultValue = "10")Integer rows){
+
+        try {
+            PageInfo<Item> pageInfo = this.itemService.queryPageList(page, rows);
+            EasyUIResult easyUIResult = new EasyUIResult(pageInfo.getTotal(),pageInfo.getList());
+            return ResponseEntity.ok(easyUIResult);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // 500
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    }
+
+    /**
+     * 修改商品信息
+     * @param item
+     * @param desc
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.PUT)
+    public ResponseEntity<Void> updateItem(Item item,@RequestParam String desc){
+        try {
+            if(LOGGER.isInfoEnabled()){
+                LOGGER.info("修改商品，item = {}, desc = {}",item,desc);
+            }
+            if (StringUtils.isEmpty(item.getTitle())){
+                // 400
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+            this.itemService.updateItem(item,desc);
+            if(LOGGER.isInfoEnabled()){
+                LOGGER.info("修改商品成功，itemId = {}",item.getId());
+            }
+            // 204
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } catch (Exception e) {
+            LOGGER.error("修改商品失败！Title = "+item.getTitle()+",cid = "+item.getCid(),e);
+        }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 }

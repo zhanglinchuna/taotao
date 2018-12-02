@@ -7,7 +7,6 @@ import com.github.pagehelper.PageInfo;
 import com.taotao.pojo.BasePojo;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +15,7 @@ public abstract class BaseService<T extends BasePojo> {
 
 //    public abstract Mapper<T> getMapper();
 
-    @Resource
+    @Autowired
     private Mapper<T> mapper;
     /**
      * 根据id查询数据
@@ -57,14 +56,14 @@ public abstract class BaseService<T extends BasePojo> {
      * 分页查询数据列表
      * @param page
      * @param row
-     * @param record
+     * @param example
      * @return
      */
-    public PageInfo<T> queryPageListByWhere(Integer page,Integer row,T record){
+    public PageInfo<T> queryPageListByWhere(Integer page,Integer row,Example example){
         // 设置分页参数
         PageHelper.startPage(page,row);
-        List<T> list = this.mapper.select(record);
-        return new PageInfo<T>(list);
+        List<T> list = this.mapper.selectByExample(example);
+        return new PageInfo<>(list);
     }
 
     /**
@@ -139,4 +138,5 @@ public abstract class BaseService<T extends BasePojo> {
     public Integer deleteByWhere(T record){
         return this.mapper.delete(record);
     }
+
 }

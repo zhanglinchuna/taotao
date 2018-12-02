@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taotao.manage.mapper.Item_ParamMapper" >
+
+  <resultMap id="queryPageListMap" type="com.taotao.pojo.Item_Param">
+    <id column="id" property="id"/>
+    <result column="item_cat_id" property="itemCatId"/>
+    <result column="param_data" property="paramData"/>
+    <result column="created" property="created"/>
+    <result column="updated" property="updated"/>
+    <result column="name" property="itemCatName"/>
+  </resultMap>
+
+  <select id="queryPageList" resultMap="queryPageListMap">
+    select t1.* , t2.name
+    from tb_item_param t1,tb_item_cat t2
+    where t1.item_cat_id = t2.id
+  </select>
+</mapper>

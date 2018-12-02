@@ -20,6 +20,11 @@
     </modules>
 
     <dependencies>
+        <dependency>
+            <groupId>com.taotao.common</groupId>
+            <artifactId>taotao-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
         <!-- 单元测试 -->
         <dependency>
             <groupId>junit</groupId>
@@ -50,8 +55,10 @@
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
                 <configuration>
-                    <port>80</port>
+                    <port>8081</port>
                     <path>/</path>
+                    <uriEncoding>UTF-8</uriEncoding>
+                    <server>tomcat7</server>
                 </configuration>
             </plugin>
         </plugins>
