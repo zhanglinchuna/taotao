@@ -14,7 +14,7 @@ public class ItemParamItemService extends BaseService<ItemParamItem> {
     @Autowired
     private ItemParamItemMapper itemParamItemMapper;
 
-    public void updateItemParamItem(Long itemId, String itemParams) {
+    void updateItemParamItem(Long itemId, String itemParams) {
         // 更新的对象
         ItemParamItem record = new ItemParamItem();
         record.setParamData(itemParams);

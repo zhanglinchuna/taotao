@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<table class="easyui-datagrid" id="itemParamList" title="商品列表" 
+<table class="easyui-datagrid" id="itemParamList" title="规格参数列表"
        data-options="singleSelect:false,collapsible:true,pagination:true,url:'/rest/item/param/list',method:'get',pageSize:10,toolbar:itemParamListToolbar">
     <thead>
         <tr>
@@ -13,7 +13,7 @@
         </tr>
     </thead>
 </table>
-<div id="itemEditWindow" class="easyui-window" title="编辑商品" data-options="modal:true,closed:true,iconCls:'icon-save',href:'/rest/page/item-edit'" style="width:80%;height:80%;padding:10px;">
+<div id="itemEditWindow" class="easyui-window" title="编辑规格参数" data-options="modal:true,closed:true,iconCls:'icon-save',href:'/rest/page/item-param-edit'" style="width:80%;height:80%;padding:10px;">
 </div>
 <script>
 
@@ -49,7 +49,72 @@
         text:'编辑',
         iconCls:'icon-edit',
         handler:function(){
-        	$.messager.alert('提示','该功能未实现!');
+            var ids = getSelectionsIds();
+            if(ids.length == 0){
+                $.messager.alert('提示','必须选择一条规格参数才能编辑!');
+                return ;
+            }
+            if(ids.indexOf(',') > 0){
+                $.messager.alert('提示','只能选择一条规格参数!');
+                return ;
+            }
+
+            $("#itemEditWindow").window({
+                onLoad :function(){
+                    //回显数据
+                    var data = $("#itemList").datagrid("getSelections")[0];
+                    data.priceView = TAOTAO.formatPrice(data.price);
+                    $("#itemeEditForm").form("load",data);
+
+                    //加载商品规格
+                    //提交到后台的RESTful
+                    $.ajax({
+                        type: "GET",
+                        url: "/rest/item/param/item/" + data.id,
+                        statusCode : {
+                            200 : function(_data){
+                                $("#itemeEditForm .params").show();
+                                $("#itemeEditForm [name=itemParams]").val(_data.paramData);
+                                $("#itemeEditForm [name=itemParamId]").val(_data.id);
+
+                                //回显商品规格
+                                var paramData = JSON.parse(_data.paramData);
+
+                                var html = "<ul>";
+                                for(var i in paramData){
+                                    var pd = paramData[i];
+                                    html+="<li><table>";
+                                    html+="<tr><td colspan=\"2\" class=\"group\">"+pd.group+"</td></tr>";
+
+                                    for(var j in pd.params){
+                                        var ps = pd.params[j];
+                                        html+="<tr><td class=\"param\"><span>"+ps.k+"</span>: </td><td><input autocomplete=\"off\" type=\"text\" value='"+ps.v+"'/></td></tr>";
+                                    }
+
+                                    html+="</li></table>";
+                                }
+                                html+= "</ul>";
+                                $("#itemeEditForm .params td").eq(1).html(html);
+
+                            },
+                            404 : function(){
+
+                            },
+                            500 : function(){
+                                alert("error");
+                            }
+                        }
+                    });
+
+                    TAOTAO.init({
+                        "pics" : data.image,
+                        "cid" : data.cid,
+                        fun:function(node){
+                            TAOTAO.changeItemParam(node, "itemeEditForm");
+                        }
+                    });
+                }
+            }).window("open");
         }
     },{
         text:'删除',

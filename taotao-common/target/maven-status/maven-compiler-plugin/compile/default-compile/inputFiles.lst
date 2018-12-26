@@ -1,4 +1,9 @@
 D:\idea_workspace\taotao-parent\taotao-common\src\main\java\com\taotao\common\spring\exetend\converter\json\CallbackMappingJackson2HttpMessageConverter.java
+D:\idea_workspace\taotao-parent\taotao-common\src\main\java\com\taotao\common\httpclient\IdleConnectionEvictor.java
+D:\idea_workspace\taotao-parent\taotao-common\src\main\java\com\taotao\common\httpclient\HttpResult.java
 D:\idea_workspace\taotao-parent\taotao-common\src\main\java\com\taotao\common\bean\ItemCatResult.java
 D:\idea_workspace\taotao-parent\taotao-common\src\main\java\com\taotao\common\bean\EasyUIResult.java
+D:\idea_workspace\taotao-parent\taotao-common\src\main\java\com\taotao\common\service\ApiService.java
+D:\idea_workspace\taotao-parent\taotao-common\src\main\java\com\taotao\common\service\Function.java
+D:\idea_workspace\taotao-parent\taotao-common\src\main\java\com\taotao\common\service\RedisService.java
 D:\idea_workspace\taotao-parent\taotao-common\src\main\java\com\taotao\common\bean\ItemCatData.java

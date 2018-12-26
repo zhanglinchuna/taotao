@@ -1,8 +1,12 @@
 package com.taotao.manage.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.taotao.common.bean.ItemCatData;
 import com.taotao.common.bean.ItemCatResult;
+import com.taotao.common.service.RedisService;
 import com.taotao.pojo.ItemCat;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,6 +23,7 @@ public class ItemCatService extends BaseService<ItemCat> {
 
     /**
      * 根据父节点id查询商品类目列表
+     *
      * @param parentId
      * @return
      */
@@ -27,6 +32,11 @@ public class ItemCatService extends BaseService<ItemCat> {
 //        record.setParentId(parentId);
 //        return this.itemCatMapper.select(record);
 //    }
+    private final static ObjectMapper MAPPER = new ObjectMapper();
+    private final static String REDIS_KEY = "TAOTAO_MANAGE_ITEM_CAT_ALL";//项目名_模块名_业务名
+    private final static Integer REDIS_TIME = 60 * 60 * 24 * 30;//缓存失效时间
+    @Autowired
+    private RedisService redisService;
 
     /**
      * 全部查询，并且生成树状结构
@@ -34,7 +44,19 @@ public class ItemCatService extends BaseService<ItemCat> {
      * @return
      */
     public ItemCatResult queryAllToTree() {
+
         ItemCatResult result = new ItemCatResult();
+        try {
+            // 先从缓存命中，如果命中的话返回，没有命中程序继续执行，查询数据库
+            String cacheData = this.redisService.get(REDIS_KEY);
+            if (StringUtils.isNotEmpty(cacheData)) {
+                // 命中
+                return MAPPER.readValue(cacheData, ItemCatResult.class);
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         // 全部查出，并且在内存中生成树形结构
         List<ItemCat> cats = super.queryAll();
 
@@ -80,6 +102,12 @@ public class ItemCatService extends BaseService<ItemCat> {
             if (result.getItemCats().size() >= 14) {
                 break;
             }
+        }
+        try {
+            // 将结果集写入到缓存中
+            this.redisService.set(REDIS_KEY, MAPPER.writeValueAsString(result), REDIS_TIME);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return result;
     }

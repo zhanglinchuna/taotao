@@ -4,6 +4,7 @@ import com.github.abel533.entity.Example;
 import com.github.abel533.mapper.Mapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.taotao.common.bean.EasyUIResult;
 import com.taotao.pojo.BasePojo;
 import org.springframework.beans.factory.annotation.Autowired;
 
