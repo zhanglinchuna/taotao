@@ -1,0 +1,6 @@
+com\taotao\web\controller\ItemController.class
+com\taotao\web\controller\IndexController.class
+com\taotao\web\service\ItemService.class
+com\taotao\web\service\IndexService.class
+com\taotao\web\controller\ItemCacheController.class
+com\taotao\web\bean\Item.class
