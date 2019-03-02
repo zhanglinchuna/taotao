@@ -13,6 +13,7 @@
         <module>taotao-manage</module>
         <module>taotao-web</module>
         <module>taotao-sso</module>
+        <module>taotao-order</module>
     </modules>
 
     <!-- 集中定义依赖版本号 -->

@@ -33,4 +33,10 @@
         <property name="maxUploadSize" value="5242880"/>
     </bean>
 
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/order/**"/>
+            <bean class="com.taotao.web.handlerInterceptor.UserLoginHandlerInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 </beans>

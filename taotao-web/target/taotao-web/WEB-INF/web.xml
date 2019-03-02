@@ -34,6 +34,10 @@
 		 -->
     <url-pattern>*.html</url-pattern>
   </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>taotao-web</servlet-name>
+    <url-pattern>/service/*</url-pattern>
+  </servlet-mapping>
 
   <!-- 编码过滤器，以UTF8编码 -->
   <filter>
