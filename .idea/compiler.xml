@@ -12,6 +12,7 @@
         <module name="taotao-manage-service" />
         <module name="taotao-manage-web" />
         <module name="taotao-order" />
+        <module name="taotao-search" />
         <module name="taotao-sso" />
         <module name="taotao-web" />
       </profile>

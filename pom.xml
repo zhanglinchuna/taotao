@@ -14,6 +14,7 @@
         <module>taotao-web</module>
         <module>taotao-sso</module>
         <module>taotao-order</module>
+        <module>taotao-search</module>
     </modules>
 
     <!-- 集中定义依赖版本号 -->

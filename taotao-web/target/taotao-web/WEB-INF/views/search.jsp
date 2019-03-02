@@ -10,14 +10,14 @@
 <title>${query} - 商品搜索 - 淘淘</title>
 <meta name="Keywords" content="java,淘淘java" />
 <meta name="description" content="在淘淘中找到了29910件java的类似商品，其中包含了“图书”，“电子书”，“教育音像”，“骑行运动”等类型的java的商品。" />
-<link rel="stylesheet" type="text/css" href="/css/base.css" media="all" />
-<link rel="stylesheet" type="text/css" href="/css/psearch20131008.css" media="all" />
-<link rel="stylesheet" type="text/css" href="/css/psearch.onebox.css" media="all" />
-<link rel="stylesheet" type="text/css" href="/css/pop_compare.css" media="all" />
-<script type="text/javascript" src="/js/jquery-1.2.6.min.js"></script>
+<link rel="stylesheet" type="text/css" href="http://static.taotao.com/css/base.css" media="all" />
+<link rel="stylesheet" type="text/css" href="http://static.taotao.com/css/psearch20131008.css" media="all" />
+<link rel="stylesheet" type="text/css" href="http://static.taotao.com/css/psearch.onebox.css" media="all" />
+<link rel="stylesheet" type="text/css" href="http://static.taotao.com/css/pop_compare.css" media="all" />
+<script type="text/javascript" src="http://static.taotao.com/js/jquery-1.2.6.min.js"></script>
 </head>
 <body>
-<script type="text/javascript" src="/js/base-2011.js" charset="utf-8"></script>
+<script type="text/javascript" src="http://static.taotao.com/js/base-2011.js" charset="utf-8"></script>
 <!-- header start -->
 <jsp:include page="../commons/header.jsp" />
 <!-- header end -->
@@ -67,8 +67,8 @@
 <!-- footer start -->
 <jsp:include page="../commons/footer.jsp" />
 <!-- footer end -->
-<script type="text/javascript" src="/js/jquery.hashchange.js"></script>
-<script type="text/javascript" src="/js/search_main.js"></script>
+<script type="text/javascript" src="http://static.taotao.com/js/jquery.hashchange.js"></script>
+<script type="text/javascript" src="http://static.taotao.com/js/search_main.js"></script>
 <script type="text/javascript">
 //${paginator.totalPages}
 SEARCH.query = "${query}";
