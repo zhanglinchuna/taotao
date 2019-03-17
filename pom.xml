@@ -15,6 +15,7 @@
         <module>taotao-sso</module>
         <module>taotao-order</module>
         <module>taotao-search</module>
+        <module>taotao-cart</module>
     </modules>
 
     <!-- 集中定义依赖版本号 -->
