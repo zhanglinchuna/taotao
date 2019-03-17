@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -106,5 +107,24 @@ public class CartController {
         }
         // 重定向到购物车列表页面
         return "redirect:/cart/list.html";
+    }
+
+    /**
+     * 对外提供接口，根据用户id查询购物车列表（数据库查询）
+     * @param userId
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.GET,params = "userId")
+    public ResponseEntity<List<Cart>> queryCartListByUserId(@RequestParam("userId")Long userId){
+        try {
+            List<Cart> carts = this.cartService.queryCartList(userId);
+            if (null == carts || carts.isEmpty()){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+            return ResponseEntity.ok(carts);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
     }
 }

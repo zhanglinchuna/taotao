@@ -56,8 +56,12 @@ public class CartService {
 
     public List<Cart> queryCartList() {
         User user = UserThreadLocal.get();
+        return this.queryCartList(user.getId());
+    }
+
+    public List<Cart> queryCartList(Long userId) {
         Example example = new Example(Cart.class);
-        example.createCriteria().andEqualTo("userId",user.getId());
+        example.createCriteria().andEqualTo("userId",userId);
         example.setOrderByClause("created DESC");
         return this.cartMapper.selectByExample(example);
     }
@@ -81,4 +85,5 @@ public class CartService {
         record.setItemId(itemId);
         this.cartMapper.delete(record);
     }
+
 }
