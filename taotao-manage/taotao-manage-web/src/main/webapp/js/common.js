@@ -99,8 +99,8 @@ var TT = TAOTAO = {
     initItemCat : function(data){
     	$(".selectItemCat").each(function(i,e){
     		var _ele = $(e);
-    		if(data && data.cid){
-    			_ele.after("<span style='margin-left:10px;'>"+data.cid+"</span>");
+    		if(data && data.cidName){
+    			_ele.after("<span style='margin-left:10px;'>"+data.cidName+"</span>");
     		}else{
     			_ele.after("<span style='margin-left:10px;'></span>");
     		}

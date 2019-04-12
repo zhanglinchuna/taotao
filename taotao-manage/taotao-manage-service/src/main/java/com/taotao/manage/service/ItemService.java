@@ -3,12 +3,13 @@ package com.taotao.manage.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.abel533.entity.Example;
-import com.github.abel533.mapper.Mapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.taotao.common.service.ApiService;
+import com.taotao.manage.mapper.ItemCatMapper;
 import com.taotao.manage.mapper.ItemMapper;
 import com.taotao.pojo.Item;
+import com.taotao.pojo.ItemCat;
 import com.taotao.pojo.ItemDesc;
 import com.taotao.pojo.ItemParamItem;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -16,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -28,6 +28,9 @@ public class ItemService extends BaseService<Item> {
 
     @Autowired
     private ItemMapper itemMapper;
+
+    @Autowired
+    private ItemCatMapper itemCatMapper;
 
     @Autowired
     private ItemParamItemService itemParamItemService;
@@ -72,11 +75,17 @@ public class ItemService extends BaseService<Item> {
     public PageInfo<Item> queryPageList(Integer page,Integer rows){
         Example example = new Example(Item.class);
         example.setOrderByClause("updated DESC");
-
         // 设置分页参数
         PageHelper.startPage(page,rows);
-
         List<Item> list = this.itemMapper.selectByExample(example);
+        // 将商品的cid的code转为中文名称
+        if (null != list && list.size()!=0){
+            for (Item items:list){
+                Long cid = items.getCid();
+                ItemCat itemCat = itemCatMapper.selectByPrimaryKey(cid);
+                items.setCidName(itemCat.getName());
+            }
+        }
 
         return new PageInfo<>(list);
     }

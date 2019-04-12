@@ -1,5 +1,6 @@
 package com.taotao.sso.controller;
 
+import com.taotao.common.service.RedisService;
 import com.taotao.common.utils.CookieUtils;
 import com.taotao.sso.pojo.User;
 import com.taotao.sso.service.UserService;
@@ -12,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -26,6 +28,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RedisService redisService;
 
     private static final String COOKIE_NAME = "TT_TOKEN";
 
@@ -149,5 +154,31 @@ public class UserController {
             e.printStackTrace();
         }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    }
+
+    /**
+     * 退出登入
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/logout",method = RequestMethod.GET)
+    public ResponseEntity<Void> logout(HttpServletRequest request, HttpServletResponse response){
+        String cookieName = null;
+        String cookieValue = null;
+        String cookieStr;
+        Cookie[] cookies = request.getCookies();
+        for (Cookie cookie:cookies){
+            if (StringUtils.equals(COOKIE_NAME,cookie.getName())){
+                cookieName = cookie.getName();
+                cookieValue = cookie.getValue();
+                CookieUtils.deleteCookie(request,response,cookieName);
+            }
+        }
+        if (cookieName != null && cookieValue != null){
+            cookieStr = "TOKEN_" + cookieValue;
+            redisService.del(cookieStr);
+        }
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

@@ -1,9 +1,6 @@
 package com.taotao.pojo;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Table(name = "tb_item")
 public class Item extends BasePojo {
@@ -26,6 +23,12 @@ public class Item extends BasePojo {
 
     private Long cid;
 
+    /**
+     * 忽略该字段与表字段映射
+     */
+    @Transient
+    private String cidName;
+
     private Integer status;
 
     public Long getId() {
@@ -34,6 +37,14 @@ public class Item extends BasePojo {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getCidName() {
+        return cidName;
+    }
+
+    public void setCidName(String cidName) {
+        this.cidName = cidName;
     }
 
     public String getTitle() {
