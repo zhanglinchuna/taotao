@@ -49,12 +49,12 @@
 			<input type="hidden" name="orderItems[${status.index}].picPath" value="${cart.itemImage}"/>
 		</c:forEach>
 		<input type="hidden" name="payment" value="<fmt:formatNumber groupingUsed="false" maxFractionDigits="2" minFractionDigits="2" value="${totalPrice/1000 }"/>"/>
-		<input type="hidden" name="orderShipping.receiverName" value="张志君"/>
-		<input type="hidden" name="orderShipping.receiverMobile" value="15800000000"/>
+		<input type="hidden" name="orderShipping.receiverName" value="张林春"/>
+		<input type="hidden" name="orderShipping.receiverMobile" value="13761166071"/>
 		<input type="hidden" name="orderShipping.receiverState" value="上海"/>
 		<input type="hidden" name="orderShipping.receiverCity" value="上海"/>
-		<input type="hidden" name="orderShipping.receiverDistrict" value="闵行区"/>
-		<input type="hidden" name="orderShipping.receiverAddress" value="浦江镇 xxxxxxxxx"/>
+		<input type="hidden" name="orderShipping.receiverDistrict" value="浦东区"/>
+		<input type="hidden" name="orderShipping.receiverAddress" value="高行镇 万安街XXX号"/>
 	</form>
 
 <!-- main -->
@@ -85,12 +85,12 @@
 	<div class="consignee-item item-selected" consigneeId="137617472" id="consignee_index_div_137617472">
 		<b></b>
 		<div class="user-name">
-			<div class="fl"><strong limit="4">张志君</strong>&nbsp;&nbsp;收</div>
-			<div class="fr">158****0000</div>
+			<div class="fl"><strong limit="4">张林春</strong>&nbsp;&nbsp;收</div>
+			<div class="fr">137****6071</div>
 			<div class="clr"></div>
 		</div>
-		<div class="mt10" limit="15">上海 闵行区 外环以外 </div>
-		<div class="adr-m" limit="30">浦江镇 xxxxxxxxx</div>
+		<div class="mt10" limit="15">上海 浦东区 外环以外 </div>
+		<div class="adr-m" limit="30">高行镇 万安街XXX号</div>
 		<div class="op-btns ar">
 										<a href="#none" class="ftx-05 mr10 setdefault-consignee hide" fid="137617472">设为默认地址</a>
 						<a href="#none" class="ftx-05 mr10 edit-consignee" fid="137617472">编辑</a>
@@ -195,7 +195,7 @@ $('.online-payment')
 <div class="step-tit">
 	<h3>送货清单</h3>
 	<div class="extra-r">
-					<a href="/cart/show.html" id="cartRetureUrl" class="return-edit ftx-05">返回修改购物车</a>
+					<a href="http://cart.taotao.com/cart/list.html" id="cartRetureUrl" class="return-edit ftx-05">返回修改购物车</a>
 			</div>
 </div>
 <div class="step-cont" id="skuPayAndShipment-cont">
@@ -222,6 +222,7 @@ $('.online-payment')
                                  <div class="goods-suit goods-last">
             <div class="goods-suit-tit">
             </div>
+	  <c:set var="itemsNum" value="0"/>
 	 <c:forEach items="${carts }" var="cart">     						
         <div class="goods-item goods-item-extra">
     
@@ -236,10 +237,11 @@ $('.online-payment')
 					</div>
           <div class="p-price">
 			  <!--增加预售金额显示 begin   预售分阶段支付类型（1：一阶梯全款支付；2：一阶梯定金支付(全款或定金可选)；3：三阶梯仅定金支付） -->
-			  				  <strong >￥<fmt:formatNumber groupingUsed="false" maxFractionDigits="2" minFractionDigits="2" value="${cart.itemPrice / 1000 }"/></strong>
+			  				  <strong >￥<fmt:formatNumber groupingUsed="false" maxFractionDigits="2" minFractionDigits="2" value="${cart.itemPrice / 100 }"/></strong>
 			  			  <!--增加预售金额显示 end-->
             <span class="ml20">
-				 			    	x1
+				<c:set var="itemsNum" value="${itemsNum + cart.num}"/>
+				 			    	x ${cart.num}
 				 			</span>
             <span class="ml20 p-inventory" skuId="11555193">有货</span>
                                       
@@ -648,12 +650,12 @@ $('.online-payment')
 	<!--  预售 计算支付展现方式 begin -->
 		<div class="statistic fr">
 		<div class="list">
-			<span><em class="ftx-01">2</em> 件商品，总商品金额：</span>
-			<em class="price" id="warePriceId" v="182.60">￥182.60</em>
+			<span>共：<em class="ftx-01">${itemsNum.toString()}</em> 件商品，总商品金额：</span>
+			<em class="price" id="warePriceId">${totalPrice / 100}</em>
 		</div>
 		<div class="list">
 			<span>返现：</span>
-			<em class="price" id="cachBackId" v="20.00"> -￥20.00</em>
+			<em class="price" id="cachBackId" v="0.00"> -￥0.00</em>
 		</div>
 		<div class="list">
 			<span>运费：</span>
@@ -679,7 +681,7 @@ $('.online-payment')
 		</div>
 		<div class="list">
 			<span>应付总额：</span>
-			<em class="price" id="sumPayPriceId"> ￥162.60</em>
+			<em class="price" id="sumPayPriceId"> ￥${totalPrice / 100}</em>
 		</div>
 	</div>
 		<div class="clr"></div>
@@ -699,7 +701,7 @@ $('.online-payment')
           <button type="submit" class="checkout-submit btn-1" id="order-submit" onclick="javascript:submit_Order();">
             提交订单<b></b>
           </button>
-                    <span class="total">应付总额：<strong id="payPriceId">￥162.60</strong>
+                    <span class="total">应付总额：<strong id="payPriceId">￥${totalPrice / 100}</strong>
             <label class="noShowMoney hide" id="giftBuyHidePriceDiv">
               <input type="checkbox" id="giftBuyHidePrice" checked >隐藏礼品价格
             </label>

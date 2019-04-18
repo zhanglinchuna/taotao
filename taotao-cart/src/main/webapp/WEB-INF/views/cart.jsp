@@ -57,8 +57,10 @@
     <div id="product-list" class="cart-tbody">
         <!-- ************************商品开始********************* -->
         <c:set var="totalPrice" value="0"></c:set>
+        <c:set var="itemNum" value="0"></c:set>
         <c:forEach items="${cartList}" var="cart">
         	<c:set var="totalPrice"  value="${ totalPrice + (cart.itemPrice * cart.num)}"/>
+            <c:set var="itemNum" value="${itemNum + cart.num}"/>
 	        <div id="product_11345721" data-bind="rowid:1" class="item item_selected ">
 		        <div class="item_form clearfix">
 		            <div class="cell p-checkbox"><input data-bind="cbid:1" class="checkbox" type="checkbox" name="checkItem" checked="" value="11345721-1"></div>
@@ -96,7 +98,7 @@
                 <p><span class="totalSkuPrice">¥<fmt:formatNumber value="${totalPrice / 100}" maxFractionDigits="2" minFractionDigits="2" groupingUsed="true"/></span>总计：</p>
                 <p><span id="totalRePrice">- ¥0.00</span>优惠：</p>
             </div>
-            <div class="amout fr"><span id="selectedCount">1</span> 件商品</div>
+            <div class="amout fr">共：<span id="selectedCount">${itemNum.toString()}</span> 件商品</div>
         </div>
         <div class="ui-ceilinglamp-1" style="width: 988px; height: 49px;"><div class="cart-dibu ui-ceilinglamp-current" style="width: 988px; height: 49px;">
           <div class="control fdibu fdibucurrent">

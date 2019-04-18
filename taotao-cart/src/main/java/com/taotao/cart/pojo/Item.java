@@ -2,6 +2,7 @@ package com.taotao.cart.pojo;
 
 import org.apache.commons.lang3.StringUtils;
 
+import javax.persistence.Transient;
 import java.util.Date;
 
 public class Item {
@@ -21,6 +22,9 @@ public class Item {
     private String image;
 
     private Long cid;
+
+    @Transient
+    private String cidName;
 
     private Integer status;
 
@@ -110,6 +114,14 @@ public class Item {
 
     public void setCid(Long cid) {
         this.cid = cid;
+    }
+
+    public String getCidName() {
+        return cidName;
+    }
+
+    public void setCidName(String cidName) {
+        this.cidName = cidName;
     }
 
     public Integer getStatus() {
