@@ -91,18 +91,33 @@ var contentListToolbar = [{
     		$.messager.alert('提示','未选中商品!');
     		return ;
     	}
-    	$.messager.confirm('确认','确定删除ID为 '+ids+' 的内容吗？',function(r){
+    	/*$.messager.confirm('确认','确定删除ID为 '+ids+' 的内容吗？',function(r){
     	    if (r){
     	    	var params = {"ids":ids};
-            	$.post("/rest/content/delete",params, function(data){
+            	/!*$.post("/rest/content/delete",params, function(data){
         			if(data.status == 200){
         				$.messager.alert('提示','删除内容成功!',undefined,function(){
         					$("#contentList").datagrid("reload");
         				});
         			}
-        		});
+        		});*!/
+
+
     	    }
-    	});
+    	});*/
+		$.messager.confirm('确认','确定删除ID为 '+ids+' 的内容吗？',$.ajax({
+			type: "POST",
+			url: "/rest/content/delete",
+			data: {"ids":ids},
+			success: function(msg){
+				$.messager.alert('提示','删除内容成功!');
+				$("#contentList").datagrid("reload");
+				TT.closeCurrentWindow();
+			},
+			error: function(){
+				$.messager.alert('提示','删除内容失败!');
+			}
+		}));
     }
 }];
 </script>

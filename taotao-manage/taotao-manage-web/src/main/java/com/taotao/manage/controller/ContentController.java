@@ -72,4 +72,25 @@ public class ContentController {
         }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
+
+    /**
+     *  删除内容
+     * @param ids
+     * @return
+     */
+    @RequestMapping(value = "delete",method = RequestMethod.POST)
+    public ResponseEntity<Void> deleteContent(@RequestParam(value="ids")String ids){
+        try {
+            String[] split = ids.split(",");
+            if (split != null && split.length != 0){
+                for (String id:split){
+                    this.contentService.deleteById(Long.parseLong(id));
+                }
+            }
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
 }
