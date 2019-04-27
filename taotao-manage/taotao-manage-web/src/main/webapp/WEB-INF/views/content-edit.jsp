@@ -6,6 +6,8 @@
 	<form id="contentEditForm" class="itemForm" method="post">
 		<input type="hidden" name="categoryId"/>
 		<input type="hidden" name="id"/>
+		<input type="hidden" name="created"/>
+		<input type="hidden" name="updated"/>
 	    <table cellpadding="5">
 	        <tr>
 	            <td>内容标题:</td>
@@ -47,7 +49,7 @@
 	    </table>
 	</form>
 	<div style="padding:5px">
-	    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="contentEditPage.submitForm()">提交</a>
+	    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="contentEditPage.submitForm()">修改</a>
 	    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="contentEditPage.clearForm()">重置</a>
 	</div>
 </div>
@@ -56,6 +58,7 @@ var contentEditEditor ;
 $(function(){
 	contentEditEditor = TT.createEditor("#contentEditForm [name=content]");
 	TT.initOnePicUpload();
+	/*$("#contentEditForm [name=categoryId]").val($("#contentCategoryTree").tree("getSelected").id);*/
 });
 
 var contentEditPage = {
@@ -66,17 +69,33 @@ var contentEditPage = {
 			}
 			contentEditEditor.sync();
 			
-			$.post("/rest/content/edit",$("#contentEditForm").serialize(), function(data){
+			/*$.post("/rest/content/edit",$("#contentEditForm").serialize(), function(data){
 				if(data.status == 200){
-					$.messager.alert('提示','新增内容成功!');
+					$.messager.alert('提示','修改内容成功!');
 					$("#contentList").datagrid("reload");
 					TT.closeCurrentWindow();
 				}
+			});*/
+
+			//提交到后台的RESTful
+			$.ajax({
+				type: "POST",
+				url: "/rest/content/edit",
+				data: $("#contentEditForm").serialize(),
+				success: function(msg){
+					$.messager.alert('提示','修改内容成功!');
+					$("#contentList").datagrid("reload");
+					TT.closeCurrentWindow();
+				},
+				error: function(){
+					$.messager.alert('提示','修改内容失败!');
+				}
 			});
 		},
-		clearForm : function(){
-			
-		}
+	clearForm : function(){
+		$('#contentEditForm').form('reset');
+		contentEditEditor.html('');
+	}
 };
 
 </script>

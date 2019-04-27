@@ -56,4 +56,20 @@ public class ContentController {
         }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
     }
+
+    /**
+     * 修改内容
+     * @param content
+     * @return
+     */
+    @RequestMapping(value = "edit",method = RequestMethod.POST)
+    public ResponseEntity<Void> editContent(Content content){
+        try {
+            this.contentService.update(content);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
 }
